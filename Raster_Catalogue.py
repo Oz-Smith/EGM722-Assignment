@@ -1,10 +1,19 @@
 # import relevant files such as folio, geopandas etc
+import os
+import geopandas as gpd
+import folium
+from rasterio.plot import show
+from rasterio.mask import mask
 
 # Create a list to store the GeoTIFF file paths
+geotiff_paths = []
 
-# Define the directory to scan
+# Define the directory to scan - this will need to be changed by each user
+directory = 'C:/Users/Oz Smith/Downloads'
 
 # Iterate through all files in the directory
+for file_name in os.listdir(directory):
+    file_path = os.path.join(directory, file_name)
 
 # Check if the file is a GeoTIFF
 
