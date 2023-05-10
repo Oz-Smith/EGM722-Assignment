@@ -23,11 +23,11 @@ if file_path.endswith('.tif'):
 # Create an empty GeoDataFrame to store the metadata
 metadata = gpd.geodataframe()
 
-#iterate through all GeoTIFF files
+# iterate through all GeoTIFF files
 for path in geotiff_paths:
-    #open each ratser file
+    # open each ratser file
     with rasterio.open(path) as src:
-        #create a polygon from the bounding box
+        # create a polygon from the bounding box
         bbox = src.bounds
         poly = gpd.GeoDataFrame({'geometry',gpd.GeoSeries(box(*box))}, index=[0], crs=src.crs)
 
