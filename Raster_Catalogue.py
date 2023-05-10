@@ -16,16 +16,20 @@ for file_name in os.listdir(directory):
     file_path = os.path.join(directory, file_name)
 
 # Check if the file is a GeoTIFF
-
-# Get the full file path
+if file_path.endswith('.tif'):
+    # get the full file path
+    geotiff_paths.append(file_path)
 
 # Create an empty GeoDataFrame to store the metadata
+metadata = gpd.geodataframe()
 
-# Create a list to store the GeoTIFF file paths
-
-# Open the raster file
-
-# Create a polygon from the bounding box
+#iterate through all GeoTIFF files
+for path in geotiff_paths:
+    #open each ratser file
+    with rasterio.open(path) as src:
+        #create a polygon from the bounding box
+        bbox = src.bounds
+        poly = gpd.GeoDataFrame({'geometry',gpd.GeoSeries(box(*box))}, index=[0], crs=src.crs)
 
 # Add the metadata to the GeoDataFrame
 
