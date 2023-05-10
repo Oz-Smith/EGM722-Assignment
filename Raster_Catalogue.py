@@ -29,9 +29,12 @@ for path in geotiff_paths:
     with rasterio.open(path) as src:
         # create a polygon from the bounding box
         bbox = src.bounds
-        poly = gpd.GeoDataFrame({'geometry',gpd.GeoSeries(box(*box))}, index=[0], crs=src.crs)
+        poly = gpd.GeoDataFrame({'geometry':gpd.GeoSeries(box(*bbox))}, index=[0], crs=src.crs)
 
 # Add the metadata to the GeoDataFrame
+meta = src.meta
+meta.update({'path': path, 'bbox'})
+metadata = metadata.append(meta, ignore_index = true)
 
 # Create a map centred on the first GeoTIFF file
 
