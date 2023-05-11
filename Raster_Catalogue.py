@@ -29,14 +29,15 @@ for path in geotiff_paths:
     with rasterio.open(path) as src:
         # create a polygon from the bounding box
         bbox = src.bounds
-        poly = gpd.GeoDataFrame({'geometry':gpd.GeoSeries(box(*bbox))}, index=[0], crs=src.crs)
+        poly = gpd.GeoDataFrame({'geometry': gpd.GeoSeries(box(*bbox))}, index=[0], crs=src.crs)
         # Add the metadata to the GeoDataFrame
         meta = src.meta
         meta.update({'path': path, 'bbox': bbox})
-        metadata = metadata.append(meta, ignore_index = true)
+        metadata = metadata.append(meta, ignore_index=True)
 
 # Create a map centred on the first GeoTIFF file
-
+        if path == geotiff_paths[0]:
+             m = folium.Map(location=[poly.gemoetry.centroid.y, poly.geometry.centroid.x], zoom_start=12)
 # Add each GeoTIFF file to the map
 
 # Create a GeoJSON representation of the footprint
@@ -44,3 +45,5 @@ for path in geotiff_paths:
 # Add the footprint to the map as a GeoJSON overlay
 
 # Add a marker at the centroid of the footprint
+
+# Display the map
