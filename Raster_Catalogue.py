@@ -99,6 +99,15 @@ def build_folium_map(map_centre: list[int], gdf: gpd.GeoDataFrame):
     return folium_map
 
 # Look into creating a progress bar as currently noting happens until the script has finished
+    for path in tqdm.tqdm(
+        tif_paths, desc='Retrieving GeoTIFF valid data footprints:  '
+        ):
+        gs_array.append(get_tif_footprint(path))
+
+    gdf = build_footprint_gdf(gs_array)
+    map_centre = get_gdf_centroid(gdf)
+    folium_map = build_folium_map(map_centre, gdf)
+    folium_map.save(r"GeoTIFF_footprints_map.html")
 
 if __name__ == '__main__':
     main()
