@@ -1,10 +1,11 @@
 # import relevant package  folio, geopandas etc
-import glob, shapely
-import pandas as pdd
-import geopandas as gpd
-import rasterio as rio
-from rasterio import features # necessary as features often not resolved using an import of rasterio
+import glob
+import shapely
 import folium
+import geopandas as gpd
+import pandas as pd
+import rasterio as rio
+from rasterio import features  # necessary as features often not resolved using an import of rasterio
 
 # define a list of the GeoTIFF file paths
 def get_tif_paths(tif_directory: str) -> list[str]:
@@ -56,4 +57,18 @@ if __name__ == '__main__':
 
      gdf = build_footprint_gdf(gs_array)
 
-     print(gdf.centroid)
+     # Create a folium map centred on the centroid of the GeoDataFrame
+     map_center = list(gdf.centroid.iloc[0].coords[0][::-1])
+     m = folium.Map(location=map_center, zoom_start=13)
+
+     # Add GeoDataFrame to the map as a layer with blue fill colour and black border
+     folium.GeoJson(
+         gdf,
+         name='Footprints',
+         style_function=lambda x: {
+             'fillColor': 'blue',
+             'color': 'black',
+             'weight': 2,
+             'fillOpacity': 0.3
+         }
+     ).add_to(m)
