@@ -48,7 +48,7 @@ def main():
 
 if __name__ == '__main__':
      main()
-     tif_directory = r'C:\Users\Oz Smith\Downloads\dimapV2_PHR1A_acq20230510_deld6b99b48\IMG_PHR1A_PMS_001'
+     tif_directory = r'C:\Users\Oz Smith\Downloads'
      tif_paths = get_tif_paths(tif_directory)
      gs_array = []
 
@@ -56,6 +56,8 @@ if __name__ == '__main__':
          gs_array.append(get_tif_footprint(path))
 
      gdf = build_footprint_gdf(gs_array)
+
+     # Debug - Reproject the geometry to a projected CRS before getting its centroid
 
      # Create a folium map centred on the centroid of the GeoDataFrame
      map_center = list(gdf.centroid.iloc[0].coords[0][::-1])
@@ -72,3 +74,12 @@ if __name__ == '__main__':
              'fillOpacity': 0.3
          }
      ).add_to(m)
+
+# Add layer control to the map
+folium.LayerControl().add_to(m)
+
+# Display the map
+m.save('footprints_map.html')
+
+if __name__ == '__main__':
+    main()
