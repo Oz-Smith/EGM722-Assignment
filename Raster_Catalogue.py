@@ -48,7 +48,7 @@ def main():
 
 if __name__ == '__main__':
      main()
-     tif_directory = r'C:\Users\Oz Smith\Downloads'
+     tif_directory = r'C:\Users\Oz Smith\Downloads' # This will need to be changed for each user
      tif_paths = get_tif_paths(tif_directory)
      gs_array = []
 
