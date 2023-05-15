@@ -6,7 +6,7 @@ import geopandas as gpd
 import pandas as pd
 import rasterio as rio
 import os
-
+import tqdm
 from rasterio import features  # Necessary as features often not resolved using an import of rasterio
 
 # Define a list of the GeoTIFF file paths
@@ -72,28 +72,33 @@ if __name__ == '__main__':
      gdf = build_footprint_gdf(gs_array, tif_paths)
 
     # Debug Reproject the geometry to a projected CRS before getting its centroid
+def get_gdf_centroid(gdf: gpd.GeoDataFrame) ->[int]:
 
+    gdf_centroid = gdf.dissolve() .centroid.to_crs('EPSG:4326')
+    return [gdf_centroid.iloc[0].y, gdf.centroid.iloc[0].x]
+def build_folium_map(map_centre: list[int], gdf: gpd.GeoDataFrame):
     # Create a folium map centred on the centroid of the GeoDataFrame
-     map_center = list(gdf.centroid.iloc[0].coords[0][::-1])
-     m = folium.Map(location=map_center, zoom_start=13)
+    folium_map = folium.Map(location=map_centre, zoom_start=13)
 
     # Add GeoDataFrame to the map as a layer with blue fill colour and black border
-     folium.GeoJson(
-         gdf,
-         name='Footprints',
-         style_function=lambda x: {
-             'fillColor': 'blue',
-             'color': 'black',
-             'weight': 2,
-             'fillOpacity': 0.3
-         },
-        tooltip=folium.features.GeoJsonTooltip(fields=['file_path']) # Add file path to the layer
-).add_to(m)
-# Add layer control to the map
-folium.LayerControl().add_to(m)
+    folium.GeoJson(
+        gdf,
+        name='Footprints',
+        style_function=lambda x: {
+            'fillColor': 'blue',
+            'color': 'black',
+            'weight': 2,
+            'fillOpacity': 0.3
+        },
+        tooltip=folium.features.GeoJsonTooltip(fields=['file_path'])  # Add file path to the layer
+    ).add_to(folium_map)
 
-# Display the map
-m.save('footprints_map.html')
+    # Add layer control to the map
+    folium.LayerControl().add_to(folium_map)
+
+    return folium_map
+
+# Look into creating a progress bar as currently noting happens until the script has finished
 
 if __name__ == '__main__':
     main()
