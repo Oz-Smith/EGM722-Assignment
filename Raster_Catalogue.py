@@ -41,7 +41,7 @@ def get_tif_footprint(tif_path: str) -> gpd.GeoSeries:
                 data=geom,
                 crs=img.crs
             ).to_crs(
-                'EPSG:4326'
+                'EPSG:3857'
             )
         return footprint_gs
 
@@ -58,9 +58,10 @@ def build_footprint_gdf(gs_array: list[gpd.GeoSeries], tif_paths: list[str]) -> 
 
 
 def get_gdf_centroid(gdf: gpd.GeoDataFrame) -> list[int]:
+    gdf = gdf.to_crs('EPSG:3857')  # Reproject the geometries to a projected CRS
 
-    gdf_centroid = gdf.dissolve() .centroid.to_crs('EPSG:3857')
-    return [gdf_centroid.iloc[0].y, gdf.centroid.iloc[0].x]
+    gdf_centroid = gdf.dissolve().centroid.to_crs('EPSG:4326')  # Calculate the centroid
+    return [gdf_centroid.iloc[0].y, gdf_centroid.iloc[0].x]
 
 
 def build_folium_map(map_centre: list[int], gdf: gpd.GeoDataFrame):
@@ -84,7 +85,7 @@ def build_folium_map(map_centre: list[int], gdf: gpd.GeoDataFrame):
     folium.LayerControl().add_to(folium_map)
     return folium_map
 
-# Define where to look for tiff files
+# Define where to look for tiff files - directory will need to changed for each user
 
 
 def main():
