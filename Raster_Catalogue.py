@@ -41,7 +41,7 @@ def get_tif_footprint(tif_path: str) -> gpd.GeoSeries:
                 data=geom,
                 crs=img.crs
             ).to_crs(
-                'EPSG:3857'
+                'EPSG:4326'
             )
         return footprint_gs
 
@@ -59,7 +59,7 @@ def build_footprint_gdf(gs_array: list[gpd.GeoSeries], tif_paths: list[str]) -> 
 
 def get_gdf_centroid(gdf: gpd.GeoDataFrame) -> list[int]:
 
-    gdf_centroid = gdf.dissolve() .centroid.to_crs('EPSG:4326')
+    gdf_centroid = gdf.dissolve() .centroid.to_crs('EPSG:3857')
     return [gdf_centroid.iloc[0].y, gdf.centroid.iloc[0].x]
 
 
