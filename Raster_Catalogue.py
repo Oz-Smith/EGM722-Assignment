@@ -89,7 +89,7 @@ def build_folium_map(map_centre: list[int], gdf: gpd.GeoDataFrame):
 
 
 def main():
-    tif_directory = r"C:\Users\Oz Smith\Downloads"
+    tif_directory = r"Input your directory here"
     tif_paths = get_tif_paths(tif_directory)
     gs_array = []
 
