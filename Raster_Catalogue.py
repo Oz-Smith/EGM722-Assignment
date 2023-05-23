@@ -85,7 +85,7 @@ def build_folium_map(map_centre: list[int], gdf: gpd.GeoDataFrame):
     folium.LayerControl().add_to(folium_map)
     return folium_map
 
-# Define where to look for tiff files - directory will need to changed for each user
+# Define where to look for tiff files - directory will need to change for each user
 
 
 def main():
@@ -93,7 +93,7 @@ def main():
     tif_paths = get_tif_paths(tif_directory)
     gs_array = []
 
-    # Build a progress bar as noting seems to happen until the program finishes
+    # Build a progress bar as nothing seems to happen until the program finishes
     for path in tqdm.tqdm(tif_paths, desc='Retrieving GeoTIFF valid data footprints: '):
         gs_array.append(get_tif_footprint(path))
 
